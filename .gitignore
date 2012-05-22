@@ -1,5 +1,8 @@
-target
-project/target
+﻿project/target
 project/boot
 project/plugins/target
+project/project/target
 logs
+target
+*.sublime-project
+*.sublime-workspace
