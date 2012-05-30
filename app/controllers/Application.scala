@@ -17,12 +17,12 @@ object Application extends Controller {
   	}
 
 	def tasks = Action {
-		Ok(views.html.index(models.Task.all(), taskForm))
+		Ok(views.html.index(taskForm))
 	}
 
 	def newTask = Action { implicit request =>
 		taskForm.bindFromRequest.fold(
-			errors => BadRequest(views.html.index(models.Task.all(), errors)),
+			errors => BadRequest(views.html.index(errors)),
 			label => {
 				models.Task.create(label)
 				Redirect(routes.Application.tasks)
