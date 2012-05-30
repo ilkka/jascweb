@@ -22,7 +22,7 @@ object Application extends Controller {
 		Ok(json).as("application/json")
 	}
 
-	def newTask = Action { implicit request =>
+	def saveTasks = Action { implicit request =>
 		taskForm.bindFromRequest.fold(
 			errors => BadRequest(views.html.index(errors)),
 			label => {
