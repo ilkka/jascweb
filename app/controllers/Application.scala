@@ -12,12 +12,10 @@ object Application extends Controller {
 	)
 
   	def index = Action {
-    	//Ok(views.html.index("Your new application is ready."))
-    	Redirect(routes.Application.tasks)
+		Ok(views.html.index(taskForm))
   	}
 
 	def tasks = Action {
-		Ok(views.html.index(taskForm))
 	}
 
 	def newTask = Action { implicit request =>
