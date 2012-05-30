@@ -8,12 +8,8 @@ import com.codahale.jerkson.Json
 
 object Application extends Controller {
   
-	val taskForm = Form(
-		"label" -> nonEmptyText
-	)
-
   	def index = Action {
-		Ok(views.html.index(taskForm))
+		Ok(views.html.index())
   	}
 
 	def tasks = Action {
@@ -27,7 +23,7 @@ object Application extends Controller {
 			errors => BadRequest(views.html.index(errors)),
 			label => {
 				models.Task.create(label)
-				Redirect(routes.Application.tasks)
+				Redirect(routes.Application.index)
 			}
 		)
 	}
