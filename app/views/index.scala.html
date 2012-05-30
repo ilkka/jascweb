@@ -16,10 +16,10 @@
     
     <h2>Add a new task</h2>
 
-    @form(routes.Application.newTask) {
-    	@inputText(taskForm("label"))
+    <form data-bind="submit: create">
+    	<input data-bind="value: newTaskText" placeholder="New task" />
     	<input type="submit" value="Create">
-	}
+	</form>
 
     <script src='@routes.Assets.at("javascripts/knockout-2.1.0.js")' type="text/javascript"></script>
     <script src='@routes.Assets.at("javascripts/tasks.js")' type="text/javascript"></script>
