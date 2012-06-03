@@ -6,11 +6,11 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
-case class Task(id: Long, label: String)
+case class Task(val id: Pk[Long], val label: String)
 
 object Task {
 	val task = {
-		get[Long]("id") ~
+		get[Pk[Long]]("id") ~
 		get[String]("label") map {
 			case id~label => Task(id, label)
 		}
