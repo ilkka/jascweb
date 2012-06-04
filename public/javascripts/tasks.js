@@ -1,5 +1,5 @@
 function Task(data) {
-	this.id = data.id;
+	this.id = ko.observable(data.id);
 	this.label = ko.observable(data.label);
 }
 
@@ -11,15 +11,17 @@ function TasksViewModel() {
 	self.create = function() {
 		self.tasks.push(new Task({ label: self.newTaskText() }));
 		self.newTaskText("");
-		 $.ajax("/tasks", {
-		 	data: ko.toJSON({ tasks: self.tasks }),
-		 	type: "post", contentType: "application/json",
-		 	success: function(result) { /* it'd be nice to flash a message here */ }
-		 });
+		$.ajax("/tasks", {
+			data: ko.toJSON({ tasks: self.tasks }),
+			type: "post", contentType: "application/json",
+			success: function(result) {
+				self.tasks($.map(result, function(item) { return new Task(item); }));
+			}
+		});
 	}
 
 	$.getJSON("/tasks", function(data) {
-		var mapped = $.map(data, function(item) { console.log(item); return new Task(item); });
+		var mapped = $.map(data, function(item) { return new Task(item); });
 		self.tasks(mapped);
 	});
 }

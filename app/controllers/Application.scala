@@ -25,8 +25,8 @@ object Application extends Controller {
 	def saveTasks = Action { implicit request =>
 		val json: Option[JsValue] = request.body.asJson
 		json.map { json =>
-			val tasks = (json \ "tasks").as[List[JsValue]]
-			tasks.map { taskJson =>
+			val tasklist = (json \ "tasks").as[List[JsValue]]
+			tasklist.map { taskJson =>
 				val id = (taskJson \ "id").asOpt[Long]
 				val label = (taskJson \ "label").as[String]
 				val destroy = (taskJson \ "_destroy").asOpt[Boolean]
@@ -40,7 +40,7 @@ object Application extends Controller {
 					models.Task.create(label)
 				}
 			}
-			Ok("{'count':'"+tasks.length+"'}").as("application/json")
+			Ok(Json.generate(Task.all())).as("application/json")
 		}.getOrElse {
 			BadRequest("Expecting plain text body")
 		}
