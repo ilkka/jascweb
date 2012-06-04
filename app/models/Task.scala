@@ -2,11 +2,12 @@ package models
 
 import play.api.db._
 import play.api.Play.current
+//import play.api.libs.json._
 
 import anorm._
 import anorm.SqlParser._
 
-case class Task(val id: Pk[Long], val label: String)
+case class Task(id: Pk[Long], label: String, _destroy: Boolean = false)
 
 object Task {
 	val task = {
@@ -35,4 +36,16 @@ object Task {
 				).executeUpdate()
 		}
 	}
+
+	// def reads(json: JsValue): Task = Task(
+	// 	(json \ "id").as[Long],
+	// 	(json \ "label").as[String],
+	// 	(json \ "_destroy").as[Boolean]
+	// 	)
+
+	// def writes(t: Task): JsValue = JsObject(Seq(
+	// 		"id" -> JsNumber(t.id),
+	// 		"label" -> JsString(t.label),
+	// 		"_destroy" -> JsBoolean(t._destroy)
+	// 		))
 }

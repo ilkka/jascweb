@@ -4,8 +4,11 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import play.libs.Json._
+import play.api.libs.json.JsValue
 import com.codahale.jerkson.Json
+import anorm._
+
+import models._
 
 object Application extends Controller {
   
@@ -14,23 +17,37 @@ object Application extends Controller {
   	}
 
 	def tasks = Action {
-		val tasks = models.Task.all()
+		val tasks = Task.all()
 		val json = Json.generate(tasks)
 		Ok(json).as("application/json")
 	}
 
-	def saveTasks = Action(parse.json) { implicit request =>
-		(request.body \ "tasks").asOpt[List[models.Task]].foreach { task =>
-			if (task.id.isDefined()) {
-				// update
-			} else {
-				models.Task.create(task.label)
+	def saveTasks = Action { implicit request =>
+		val json: Option[JsValue] = request.body.asJson
+		json.map { json =>
+			val tasks = (json \ "tasks").as[List[JsValue]]
+			tasks.map { taskJson =>
+				val id = (taskJson \ "id").asOpt[Long]
+				val label = (taskJson \ "label").as[String]
+				val destroy = (taskJson \ "_destroy").asOpt[Boolean]
+				if (id.isDefined) {
+					if (destroy.getOrElse(false)) {
+						// delete
+					} else {	
+					// update
+					}
+				} else {
+					models.Task.create(label)
+				}
 			}
+			Ok("{'count':'"+tasks.length+"'}").as("application/json")
+		}.getOrElse {
+			BadRequest("Expecting plain text body")
 		}
 	}
 
 	def deleteTask(id: Long) = Action {
-		models.Task.delete(id)
+		Task.delete(id)
 		Redirect(routes.Application.index)
 	}
 
