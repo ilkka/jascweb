@@ -9,7 +9,7 @@
      </h1>
 
     <ul data-bind="foreach: tasks">
-    	<li data-bind="text: label"></li>
+    	<li><span data-bind="text: label">Task</span> <a href="#" data-bind="click: $root.delete">delete</a></li>
     </ul>
     
     <h2>Add a new task</h2>

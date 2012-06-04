@@ -8,9 +8,7 @@ function TasksViewModel() {
 	self.tasks = ko.observableArray([]);
 	self.newTaskText = ko.observable("");
 
-	self.create = function() {
-		self.tasks.push(new Task({ label: self.newTaskText() }));
-		self.newTaskText("");
+	self.saveAndUpdate = function() {
 		$.ajax("/tasks", {
 			data: ko.toJSON({ tasks: self.tasks }),
 			type: "post", contentType: "application/json",
@@ -18,6 +16,17 @@ function TasksViewModel() {
 				self.tasks($.map(result, function(item) { return new Task(item); }));
 			}
 		});
+	}
+	
+	self.create = function() {
+		self.tasks.push(new Task({ label: self.newTaskText() }));
+		self.newTaskText("");
+		self.saveAndUpdate();
+	}
+
+	self.delete = function(task) {
+		self.tasks.destroy(task);
+		self.saveAndUpdate();
 	}
 
 	$.getJSON("/tasks", function(data) {
