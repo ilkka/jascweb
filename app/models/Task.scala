@@ -18,7 +18,7 @@ object Task {
 	}
 
 	def all(): List[Task] = DB.withConnection { implicit c =>
-		SQL("select * from task").as(task *)
+		SQL("select * from task order by id").as(task *)
 	}
 
 	def create(label: String) {
