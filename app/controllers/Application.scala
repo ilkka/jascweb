@@ -32,9 +32,9 @@ object Application extends Controller {
 				val destroy = (taskJson \ "_destroy").asOpt[Boolean]
 				if (id.isDefined) {
 					if (destroy.getOrElse(false)) {
-						// delete
+						Task.delete(id.get)
 					} else {	
-					// update
+						// update
 					}
 				} else {
 					models.Task.create(label)
@@ -45,10 +45,4 @@ object Application extends Controller {
 			BadRequest("Expecting plain text body")
 		}
 	}
-
-	def deleteTask(id: Long) = Action {
-		Task.delete(id)
-		Redirect(routes.Application.index)
-	}
-
 }
