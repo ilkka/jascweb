@@ -14,7 +14,7 @@ function TasksViewModel() {
 		 $.ajax("/tasks", {
 		 	data: ko.toJSON({ tasks: self.tasks }),
 		 	type: "post", contentType: "application/json",
-		 	success: function(result), { /* it'd be nice to flash a message here */ }
+		 	success: function(result) { /* it'd be nice to flash a message here */ }
 		 });
 	}
 
