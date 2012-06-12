@@ -9,7 +9,10 @@
      </h1>
 
     <ul data-bind="foreach: tasks">
-    	<li><span data-bind="text: label">Task</span> <a href="#" data-bind="click: $root.delete">delete</a></li>
+    	<li>
+            <span data-bind="text: label, id: 'task-' + id">Task</span>
+            <input data-bind="value: label" style="display: none">Task</input> 
+            <a href="#" data-bind="click: $root.delete">delete</a></li>
     </ul>
     
     <h2>Add a new task</h2>
